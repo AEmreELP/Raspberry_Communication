@@ -76,7 +76,7 @@ def insert_to_db(database, collection, data, max_retries=3):
 
             if isinstance(data, list):
                 print("it is updated : \n", data)
-                coll.bulk_write([UpdateOne({'_id': {"k":item['k'],"Dtype":item['Dtype'],"time":item['time']}}, {'$set': item}, upsert=True) for item in data])
+                coll.bulk_write([UpdateOne({'_id': {"Arm":item["Arm"],"k":item['k'],"Dtype":item['Dtype'],"time":item['time']}}, {'$set': item}, upsert=True) for item in data])
             else:
                 #print("buraya geliyor mu??")
                 coll.update_one({'_id': data['time']}, {'$set': data}, upsert=True)
@@ -177,7 +177,7 @@ def db_worker():
                     "header": int(data[0], 16),
                     "k": int(data[1], 16),
                     "Dtype": 126,
-                    "length": int(data[3], 16),
+                    "Arm": int(data[3], 16),
                     "data": Calc_SOC(salt_data),
                     "crc": int(data[-1], 16),
                     "time": time.strftime("%d.%m.%Y, %H:%M:%S"),
@@ -191,7 +191,7 @@ def db_worker():
                     "header": int(data[0], 16),
                     "k": int(data[1], 16),
                     "Dtype": 10,
-                    "length": int(data[3], 16),
+                    "Arm": int(data[3], 16),
                     "data": salt_data,
                     "crc": int(data[-1], 16),
                     "time": time.strftime("%d.%m.%Y, %H:%M:%S"),
@@ -209,7 +209,7 @@ def db_worker():
                     "header": int(data[0], 16),
                     "k": int(data[1], 16),
                     "Dtype": 11,
-                    "length": int(data[3], 16),
+                    "Arm": int(data[3], 16),
                     "data": Calc_SOH(salt_data),
                     "crc": int(data[-1], 16),
                     "time": time.strftime("%d.%m.%Y, %H:%M:%S"),
@@ -224,7 +224,7 @@ def db_worker():
                     "header": int(data[0], 16),
                     "k": int(data[1], 16),
                     "Dtype": int(data[2], 16),
-                    "length": int(data[3], 16),
+                    "Arm": int(data[3], 16),
                     "data": salt_data,
                     "crc": int(data[-1], 16),
                     "time": time.strftime("%d.%m.%Y, %H:%M:%S"),
